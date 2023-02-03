@@ -1,3 +1,6 @@
-import MyCounter from './components/MyCounter';
+import ScrollingContainer from './components/ScrollingContainer';
+import ScrollingPage from './components/ScrollingPage';
 
-export { MyCounter };
+export { ScrollingPage };
+
+export default ScrollingContainer;
