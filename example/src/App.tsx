@@ -1,14 +1,10 @@
 import React from 'react';
 
-import ScrollingContainer from 'react-page-scroll';
+import Demo1 from './demos/Demo1';
 import './index.css';
 
 const App = () => {
-  return (
-    <ScrollingContainer>
-      <div>testing if confirmed</div>
-    </ScrollingContainer>
-  );
+  return <Demo1 />;
 };
 
 export default App;

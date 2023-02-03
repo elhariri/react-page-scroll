@@ -1,6 +1,8 @@
 import ScrollingContainer from './components/ScrollingContainer';
-import ScrollingPage from './components/ScrollingPage';
+import NestedScrollingSection from './components/NestedScrollingSection';
 
-export { ScrollingPage };
+import './index.css';
+
+export { NestedScrollingSection };
 
 export default ScrollingContainer;

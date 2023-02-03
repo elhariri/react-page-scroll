@@ -85,10 +85,19 @@ export default function ScrollingSection({
       style={{
         width,
         height,
+        overflow: 'hidden',
+        position: 'relative',
       }}
-      className='relative z-30 overflow-hidden'
     >
-      <div ref={scrollContainerRef} className={`absolute w-full h-full z-30 overflow-hidden`}>
+      <div
+        ref={scrollContainerRef}
+        style={{
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          position: 'absolute',
+        }}
+      >
         <div
           style={{
             transition: `transform ${animationDuration}ms ${animationEasing}`,
