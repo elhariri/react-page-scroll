@@ -38,7 +38,7 @@ const Demo1 = () => {
         <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
           <span style={{ margin: 'auto' }}>Page 3</span>
         </div>
-        <div style={{ width: '100vw', height: '50vh', backgroundColor: 'yellowgreen', display: 'flex' }}>
+        <div style={{ width: '100vw', height: '100vh', backgroundColor: 'yellowgreen', display: 'flex' }}>
           <span style={{ margin: 'auto' }}>Page 4</span>
         </div>
         <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>

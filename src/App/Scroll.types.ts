@@ -3,6 +3,11 @@ export enum ScrollDirections {
   horizontal = 'horizontal',
 }
 
+export enum DataSetsAttributes {
+  reactScrollPage = 'react-scroll-page',
+  reactScrollPageIndex = 'react-scroll-page-index',
+}
+
 export type ScrollDirection = `${ScrollDirections}`;
 
 export type XdirectionState = 'left' | 'right' | 'stationary';

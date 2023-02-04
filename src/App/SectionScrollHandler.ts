@@ -1,5 +1,6 @@
 import { WheelEvent } from 'react';
 import {
+  DataSetsAttributes,
   ScrollControls,
   ScrollDirections,
   ScrollHandlerState,
@@ -16,6 +17,12 @@ class SectionScrollHandler {
   private scrollUIState: ScrollHandlerState;
 
   private scrollManager: ScrollManager;
+
+  //private isIndexUnphased = false;
+
+  //private delta = 20;
+
+  //private hasMorePower = false;
 
   private bindedShouldHandleWheelScroll;
 
@@ -213,8 +220,27 @@ class SectionScrollHandler {
     }
   }
 
+  /* private checkIfIndexUnphased(event: WheelEvent<HTMLDivElement> | TouchEvent) {
+    let currentTarget = event.target as HTMLElement;
+
+    while (event.target !== window && currentTarget) {
+      if (currentTarget.getAttribute(DataSetsAttributes.reactScrollPage) === 'true') {
+        this.isIndexUnphased = !(
+          this.scrollUIState.currentChildIndex ===
+          parseInt(currentTarget.getAttribute(DataSetsAttributes.reactScrollPageIndex) || '-1')
+        );
+        return;
+      }
+
+      currentTarget = currentTarget.parentElement as HTMLElement;
+    }
+
+    throw new Error();
+  } */
+
   private shouldHandleWheelScrollEvent(event: WheelEvent<HTMLDivElement>) {
     this.captureOngoingWheelScrollState(event);
+    //this.checkIfIndexUnphased(event);
     this.handleScroll(event.target as HTMLElement);
   }
 
@@ -224,12 +250,22 @@ class SectionScrollHandler {
   }
 
   private handleScroll(currentTarget: HTMLElement) {
-    const { handlingScrolling, lastTarget } = this.scrollUIState;
+    const { lastTarget } = this.scrollUIState;
 
-    if (
-      !handlingScrolling &&
-      !lastTarget?.isEqualNode(currentTarget) // this is added to prevent handling ongoing wheel gestures, we end up handling them twice
-    ) {
+    //const posDelta = Math.abs(delta);
+
+    //this.hasMorePower = posDelta > this.delta;
+    //console.log(posDelta, this.delta);
+    //this.delta = Math.max(posDelta, 20);
+
+    //const isComplement = !this.isIndexUnphased && this.hasMorePower && lastTarget?.isEqualNode(currentTarget);
+
+    //console.log(this.isIndexUnphased, this.hasMorePower, lastTarget?.isEqualNode(currentTarget));
+
+    // const scrollWithComplement = !this.isIndexUnphased && this.hasMorePower && lastTarget?.isEqualNode(currentTarget);
+
+    if (!lastTarget?.isEqualNode(currentTarget)) {
+      // this is added to prevent handling ongoing wheel gestures, we end up handling them twice
       this.scrollUIState.lastTarget?.setAttribute('data-last-target', 'false');
       currentTarget.setAttribute('data-last-target', 'true');
       this.scrollUIState.lastTarget = currentTarget;
@@ -327,6 +363,11 @@ class SectionScrollHandler {
 
     if (scrollEnabled) {
       this.attachScrollListener();
+    }
+
+    for (let i = 0; i < childs.length; i++) {
+      childs[i].setAttribute(DataSetsAttributes.reactScrollPage, 'true');
+      childs[i].setAttribute(DataSetsAttributes.reactScrollPageIndex, i.toString());
     }
 
     if (this.container && onScrollInit) {
