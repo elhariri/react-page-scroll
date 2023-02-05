@@ -18,12 +18,14 @@ const Demo1 = () => {
 
   return (
     <motion.div
-      style={{ backgroundColor: bgColors[0] }}
-      animate={{
+      className='title'
+      style={{
         fontFamily: 'poppins',
         textAlign: 'center',
         color: 'white',
-        fontSize: '6rem',
+        backgroundColor: bgColors[0],
+      }}
+      animate={{
         backgroundColor: bgColors[currentPage],
       }}
     >
