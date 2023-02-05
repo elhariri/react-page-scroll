@@ -16,8 +16,6 @@ const scrollHandlerStateInitialState: ScrollHandlerState = {
     XDirection: 'stationary',
   },
   childs: [],
-  handlingScrolling: false,
-  lastTarget: null,
   pagesContainer: null as unknown as HTMLElement,
   direction: ScrollDirections.verticle,
   scrollEnabled: false,

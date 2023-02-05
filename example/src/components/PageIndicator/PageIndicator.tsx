@@ -54,8 +54,6 @@ function PageIndicatorPoint({
   );
 }
 
-console.log(Array.apply(0, new Array(5)).map((i: number) => i));
-
 function PageIndicator({
   pagesNumber = 4,
   selectedPage = 0,

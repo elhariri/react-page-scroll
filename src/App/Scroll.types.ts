@@ -78,8 +78,6 @@ export interface ScrollHandlerStateParams {
   scrollState: ScrollState;
   currentChildIndex: number;
   childs: HTMLElement[];
-  handlingScrolling: boolean;
-  lastTarget: HTMLElement | null;
   pagesContainer: HTMLElement;
   direction: ScrollDirections;
   scrollEnabled: boolean;

@@ -8,6 +8,7 @@ import {
   XdirectionState,
   YdirectionState,
 } from './Scroll.types';
+import { TouchScrollEvent, WheelScrollEvent } from './ScrollEvent';
 import { ScrollManager } from './ScrollManager';
 import UIScrollAnimation from './UIScrollAnimation';
 
@@ -18,11 +19,13 @@ class SectionScrollHandler {
 
   private scrollManager: ScrollManager;
 
-  //private isIndexUnphased = false;
+  private wheelScrollEvent = new WheelScrollEvent();
 
-  //private delta = 20;
+  private touchScrollEvent = new TouchScrollEvent();
 
-  //private hasMorePower = false;
+  private lasHandledEventId = 0;
+
+  private skippedFirstTouchs = 0;
 
   private bindedShouldHandleWheelScroll;
 
@@ -48,6 +51,8 @@ class SectionScrollHandler {
       YDirection: 'stationary',
       XDirection: 'stationary',
     };
+    this.lastTouchMouve = null;
+    this.skippedFirstTouchs = 0;
   }
 
   private handleResize() {
@@ -89,7 +94,6 @@ class SectionScrollHandler {
   }
 
   private blockScroll() {
-    this.scrollUIState.handlingScrolling = true;
     if (this.container) {
       this.container.removeEventListener('wheel', this.bindedShouldHandleWheelScroll);
     }
@@ -97,7 +101,6 @@ class SectionScrollHandler {
 
   private enableScroll() {
     this.attachScrollListener();
-    this.scrollUIState.handlingScrolling = false;
   }
 
   private captureOngoingWheelScrollState(wheelEvent: WheelEvent<HTMLDivElement>): ScrollState {
@@ -138,30 +141,44 @@ class SectionScrollHandler {
   }
 
   private captureOngoingTouchScrollState(touchEvent: TouchEvent): ScrollState {
-    const { direction } = this.scrollUIState;
+    const { direction, currentChildIndex, childs } = this.scrollUIState;
     let YDirection: YdirectionState = 'stationary',
       XDirection: XdirectionState = 'stationary';
 
-    if (this.lastTouchMouve) {
-      const { clientY, clientX } = touchEvent.touches[0];
-      const YDelta = Math.abs(clientY - this.lastTouchMouve.clientY);
-      const XDelta = Math.abs(clientX - this.lastTouchMouve.clientX);
-      const isVerticle = YDelta > XDelta;
-      if (isVerticle && direction === 'verticle') {
-        if (touchEvent.touches[0].clientY > this.lastTouchMouve.clientY) {
-          YDirection = 'up';
-        } else {
-          YDirection = 'down';
+    //This lines are added to fine tune the behavior on the last page on mobile some times when you scroll down ig goes up because the forst touch events are somewhat unreliable
+    // maybe this can be fine tuned in a better manner
+    // either way the skipp first touched and sensitivity logic is added to acheive vetter predictability
+
+    const isFirstOrLastChild = currentChildIndex == 0 || currentChildIndex == childs.length - 1;
+    const touchesToSkip = isFirstOrLastChild ? 4 : 1;
+
+    if (this.skippedFirstTouchs > touchesToSkip) {
+      if (this.lastTouchMouve) {
+        const { screenY, screenX } = touchEvent.changedTouches[0];
+        const YDelta = screenY - this.lastTouchMouve.screenY;
+        const XDelta = screenX - this.lastTouchMouve.screenX;
+        const isVerticle = Math.abs(YDelta) > Math.abs(XDelta);
+
+        const sensitivity = 10;
+
+        if (isVerticle && direction === 'verticle') {
+          if (YDelta > sensitivity) {
+            YDirection = 'up';
+          } else if (YDelta < -sensitivity) {
+            YDirection = 'down';
+          }
+        } else if (!isVerticle && direction === 'horizontal') {
+          if (XDelta > sensitivity) {
+            XDirection = 'left';
+          } else if (XDelta < -sensitivity) {
+            XDirection = 'right';
+          }
         }
-      } else if (!isVerticle && direction === 'horizontal') {
-        if (touchEvent.touches[0].clientX > this.lastTouchMouve.clientX) {
-          XDirection = 'left';
-        } else {
-          XDirection = 'right';
-        }
+      } else {
+        this.lastTouchMouve = touchEvent.changedTouches[0];
       }
     } else {
-      this.lastTouchMouve = touchEvent.touches[0];
+      this.skippedFirstTouchs++;
     }
 
     this.scrollUIState.scrollState = {
@@ -181,7 +198,6 @@ class SectionScrollHandler {
           this.scrollUIState.currentChildIndex++;
           return true;
         } else {
-          this.scrollUIState.lastTarget = null;
           return false;
         }
       } else {
@@ -189,12 +205,11 @@ class SectionScrollHandler {
           this.scrollUIState.currentChildIndex--;
           return true;
         } else {
-          this.scrollUIState.lastTarget = null;
           return false;
         }
       }
     }
-    this.scrollUIState.lastTarget = null;
+
     return false;
   }
 
@@ -220,70 +235,45 @@ class SectionScrollHandler {
     }
   }
 
-  /* private checkIfIndexUnphased(event: WheelEvent<HTMLDivElement> | TouchEvent) {
-    let currentTarget = event.target as HTMLElement;
-
-    while (event.target !== window && currentTarget) {
-      if (currentTarget.getAttribute(DataSetsAttributes.reactScrollPage) === 'true') {
-        this.isIndexUnphased = !(
-          this.scrollUIState.currentChildIndex ===
-          parseInt(currentTarget.getAttribute(DataSetsAttributes.reactScrollPageIndex) || '-1')
-        );
-        return;
-      }
-
-      currentTarget = currentTarget.parentElement as HTMLElement;
-    }
-
-    throw new Error();
-  } */
-
   private shouldHandleWheelScrollEvent(event: WheelEvent<HTMLDivElement>) {
     this.captureOngoingWheelScrollState(event);
-    //this.checkIfIndexUnphased(event);
-    this.handleScroll(event.target as HTMLElement);
+    this.wheelScrollEvent.controlOngoingEvent(event, this.scrollUIState.scrollState);
+    if (this.wheelScrollEvent.id > this.lasHandledEventId) {
+      this.lasHandledEventId = this.wheelScrollEvent.id;
+      this.handleScroll();
+    }
   }
 
   private shouldHandleTouchScrollEvent(event: TouchEvent) {
     this.captureOngoingTouchScrollState(event);
-    this.handleScroll(event.target as HTMLElement);
+    this.touchScrollEvent.controlOngoingEvent();
+    const { YDirection, XDirection } = this.scrollUIState.scrollState;
+    const { direction } = this.scrollUIState;
+
+    const shouldScroll =
+      (YDirection !== 'stationary' && direction === 'verticle') ||
+      (XDirection !== 'stationary' && direction === 'horizontal');
+
+    if (this.touchScrollEvent.id > this.lasHandledEventId && shouldScroll) {
+      this.lasHandledEventId = this.touchScrollEvent.id; // last handled wheel direction
+      this.handleScroll();
+    }
   }
 
-  private handleScroll(currentTarget: HTMLElement) {
-    const { lastTarget } = this.scrollUIState;
+  private handleScroll() {
+    this.blockScroll();
 
-    //const posDelta = Math.abs(delta);
+    const shouldScroll = this.setNextChild();
 
-    //this.hasMorePower = posDelta > this.delta;
-    //console.log(posDelta, this.delta);
-    //this.delta = Math.max(posDelta, 20);
-
-    //const isComplement = !this.isIndexUnphased && this.hasMorePower && lastTarget?.isEqualNode(currentTarget);
-
-    //console.log(this.isIndexUnphased, this.hasMorePower, lastTarget?.isEqualNode(currentTarget));
-
-    // const scrollWithComplement = !this.isIndexUnphased && this.hasMorePower && lastTarget?.isEqualNode(currentTarget);
-
-    if (!lastTarget?.isEqualNode(currentTarget)) {
-      // this is added to prevent handling ongoing wheel gestures, we end up handling them twice
-      this.scrollUIState.lastTarget?.setAttribute('data-last-target', 'false');
-      currentTarget.setAttribute('data-last-target', 'true');
-      this.scrollUIState.lastTarget = currentTarget;
-
-      this.blockScroll();
-
-      const shouldScroll = this.setNextChild();
-
-      if (shouldScroll) {
-        this.scroll();
-      } else if (
-        !this.UIScrollStateCopy.isRoot &&
-        this.scrollManager.shouldCedeControlToParent(this.UIScrollStateCopy)
-      ) {
+    if (shouldScroll) {
+      this.scroll();
+    } else {
+      if (!this.UIScrollStateCopy.isRoot && this.scrollManager.shouldCedeControlToParent(this.UIScrollStateCopy)) {
         this.disable();
       } else {
         this.enableScroll();
       }
+      this.reinitializeScrollState();
     }
   }
 
@@ -326,10 +316,7 @@ class SectionScrollHandler {
   scrollTo(target: number) {
     this.setScrollState(target);
 
-    this.scrollUIState.lastTarget?.setAttribute('data-last-target', 'false');
-
     this.scrollUIState.currentChildIndex = target;
-    this.scrollUIState.lastTarget = null;
 
     this.blockScroll();
 
@@ -383,8 +370,6 @@ class SectionScrollHandler {
   }
 
   disable() {
-    this.scrollUIState.handlingScrolling = false;
-
     this.removeScrollListener();
   }
 
