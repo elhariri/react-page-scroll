@@ -80,7 +80,6 @@ export class TouchScrollEvent extends ScrollEvent {
     if (this.timer) clearTimeout(this.timer);
 
     this.timer = setTimeout(() => {
-      console.log('SCROLL END');
       this.hash = 0;
     }, 60);
   }
