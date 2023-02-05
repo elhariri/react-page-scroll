@@ -16,6 +16,8 @@ abstract class ScrollEvent {
 
   abstract id: number | null;
 
+  protected scrollControlFrequency = 100;
+
   abstract controlOngoingEvent(event: ScrollEventTypes, scrollState?: ScrollState): void;
 
   protected setId() {
@@ -63,7 +65,7 @@ export class WheelScrollEvent extends ScrollEvent {
         this.power = 0;
         this.hash = 0;
       }
-    }, 60);
+    }, this.scrollControlFrequency);
   }
 
   get id() {
@@ -81,7 +83,7 @@ export class TouchScrollEvent extends ScrollEvent {
 
     this.timer = setTimeout(() => {
       this.hash = 0;
-    }, 60);
+    }, this.scrollControlFrequency);
   }
 
   get id() {
