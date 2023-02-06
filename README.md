@@ -64,15 +64,13 @@ this is nested scroll example where the container scrolls vertically and the nes
 
 ## Documentation
 
-<br>
-
 ### Content:
 
 - [PageScroll](#1-pagescroll);
 - [NestedPageScroll](#2-pagescroll);
 - [Props](#3-props)
-  <br>
-  <br>
+
+<br>
 
 ### 1. PageScroll:
 
@@ -83,7 +81,7 @@ _\<PageScroll>_ is a higher level container for enabling scroll. you can set the
 _\<PageScroll>_ automatically identifies its direct children and designates them as pages for scrolling from or to. This behavior was intended to make its usage simpler. So don't put anything that you don't consider a page as a direct child of _\<PageScroll>_.
 
 _\<PageScroll>_ supports nested scroll but through the [_\<NestedPageScroll>_ ](#2-pagescroll)component. Using _\<PageScroll>_ inside itself will cause an unintended behavior. Also using [_\<NestedPageScroll>_](#2-pagescroll) outside of a _\<PageScroll>_ will throw an error.
-<br>
+
 **Example:**
 
     import  React  from  'react';
@@ -96,17 +94,16 @@ _\<PageScroll>_ supports nested scroll but through the [_\<NestedPageScroll>_ ](
     			</PageScroll>)
     }
 
-<br><br>
+<br>
 
 ### 2. NestedPageScroll:
 
 **Type: (children: ReactNode, Props: [PageScrollProps](#3-props)) => ReactNode**
 <br>
-_\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](<(#1-pagescroll)>). With two main differences:
+_\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](#1-pagescroll)). With two main differences:
 
-1.  It is used to enable nested scroll inside a [_\<pageScroll>_](<(#1-pagescroll)>) component in case you need a different direction (to switch from vertical scrolling to horizontal scrolling) or to create a different page indicator for the nested scroll.
-2.  It can only be used inside a [_\<pageScroll>_](<(#1-pagescroll)>). You can nest it inside itself as much as you want as long as you put all of them inside a [_\<pageScroll>_](<(#1-pagescroll)>). In case you use it alone, it will throw an error.
-    <br>
+1.  It is used to enable nested scroll inside a [_\<pageScroll>_](#1-pagescroll)) component in case you need a different direction (to switch from vertical scrolling to horizontal scrolling) or to create a different page indicator for the nested scroll.
+2.  It can only be used inside a [_\<pageScroll>_](#1-pagescroll)). You can nest it inside itself as much as you want as long as you put all of them inside a [_\<pageScroll>_](#1-pagescroll)). In case you use it alone, it will throw an error.
 
 **Example:**
 
@@ -123,7 +120,7 @@ _\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](<(#1-pagescroll)>)
     			</PageScroll>)
     }
 
-<br><br>
+<br>
 
 ### 3. Props:
 
@@ -157,10 +154,29 @@ _\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](<(#1-pagescroll)>)
 
 **Hooks:**
 
-6.
-7.
-8.
-9.
+6.  **onScrollInit (Optional):**
+    - _description:_ A function that is **called whenever the component will be handling the scroll**. the function receives **the current child index, number of the scrolling container children and a scroll control object to programmatically launch a scroll** as a parameter. Notice: the same scroll control object will be given inside a [\<PageScroll>](#1-pagescroll) component.
+    - _type:_ (args: { currentChildIndex: number; numberOfChilds: number; scrollControl: ScrollControls; }) => void
+
+<br>
+
+7.  **onScrollStart (Optional):**
+    - _description:_ A function **fired when a scroll is about to happen**. the function **receives an object with the target index** as a parameter (the index of the page it will scroll into, relative to all its siblings) . this is particularly useful if you want to do something in parallel with the scroll like setting the page indicator.
+    - _type:_ (args: { targetIndex: number }) => void
+
+<br>
+
+8.  **onScrollEnd (Optional):**
+    - _description:_ A function **fired when a scroll has ended**. the function **receives an object with the current index** as a parameter (the index of the current showing page relative to all its siblings) . this is particularly useful if you want to do something after a scroll has ended.
+    - _type:_ (args: { currentIndex: number }) => void
+
+<br>
+
+9.  **onScrollCommandChange (Optional):**
+    - _description:_ A function **fired when the scroll will no longer be handled by the [\<PageScroll>](#1-pagescroll) or the [\<NestedPageScroll>](#2-nestedpagescroll) component you passed the function into** as it is passing control to another child or parent scroll component. the function **receives an object with the last page index before ceding control** as a parameter.
+    - _type:_ ({ container: HTMLElement; currentChildIndex: number; numberOfChilds: number; }) => void
+
+<br>
 
 ## Contributing
 

@@ -26,10 +26,10 @@ export default function ScrollingSection({
   isRoot = false,
   width = '100vw',
   height = '100vh',
-  onBeforeScroll = () => {},
+  onScrollStart = () => {},
   onScrollInit = () => {},
   onScrollCommandChange = () => {},
-  onAfterScroll = () => {},
+  onScrollEnd = () => {},
 }: ScrollingSectionProps) {
   const scrollStateRef = useRef<ScrollHandlerState>({
     ...scrollHandlerStateInitialState,
@@ -37,8 +37,8 @@ export default function ScrollingSection({
     scrollEnabled,
     animationDuration,
     isRoot,
-    onBeforeScroll,
-    onAfterScroll,
+    onScrollStart,
+    onScrollEnd,
     onScrollInit,
     onScrollCommandChange,
   });

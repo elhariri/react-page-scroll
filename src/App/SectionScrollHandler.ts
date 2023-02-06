@@ -239,12 +239,11 @@ class SectionScrollHandler {
       this.disable();
     }
 
-    const { onAfterScroll, currentChildIndex, childs } = this.scrollUIState;
+    const { onScrollEnd, currentChildIndex } = this.scrollUIState;
 
-    if (onAfterScroll) {
-      onAfterScroll({
+    if (onScrollEnd) {
+      onScrollEnd({
         currentIndex: currentChildIndex,
-        currentTarget: childs[currentChildIndex],
       });
     }
   }
@@ -340,12 +339,12 @@ class SectionScrollHandler {
   }
 
   scroll() {
-    const { onBeforeScroll, childs, currentChildIndex, animationDuration, direction, pagesContainer } =
+    const { onScrollStart, childs, currentChildIndex, animationDuration, direction, pagesContainer } =
       this.scrollUIState;
 
-    if (onBeforeScroll) {
-      onBeforeScroll({
-        currentIndex: currentChildIndex,
+    if (onScrollStart) {
+      onScrollStart({
+        targetIndex: currentChildIndex,
       });
     }
 
@@ -375,7 +374,6 @@ class SectionScrollHandler {
 
     if (this.container && onScrollInit) {
       onScrollInit({
-        container: this.container,
         currentChildIndex,
         numberOfChilds: childs.length,
         scrollControl,

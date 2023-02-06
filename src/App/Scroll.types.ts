@@ -34,14 +34,9 @@ export type ScrollStackItem = {
   scrollState: { reachedEndOfDocument: boolean; direction: ScrollMove };
 };
 
-export type OnScrollEvent = (targets: {
-  currentIndex: number;
-  currentTarget?: HTMLElement;
-  nextIndex?: number;
-  nextTarget?: HTMLElement;
-}) => void;
+export type OnScrollEvent = (targets: { targetIndex: number }) => void;
 
-export type OnScrollEnd = (targets: { currentIndex: number; currentTarget: HTMLElement }) => void;
+export type OnScrollEnd = (targets: { currentIndex: number }) => void;
 
 export interface ScrollControls {
   scrollTo: (index: number) => void;
@@ -51,27 +46,17 @@ export interface ScrollControls {
 
 export interface ScrollHandlerHooks {
   onScrollInit?: ({
-    container,
     currentChildIndex,
     numberOfChilds,
     scrollControl,
   }: {
-    container: HTMLElement;
     currentChildIndex: number;
     numberOfChilds: number;
     scrollControl: ScrollControls;
   }) => void;
-  onAfterScroll?: OnScrollEnd;
-  onBeforeScroll?: OnScrollEvent;
-  onScrollCommandChange?: ({
-    container,
-    currentChildIndex,
-    numberOfChilds,
-  }: {
-    container: HTMLElement;
-    currentChildIndex: number;
-    numberOfChilds: number;
-  }) => void;
+  onScrollEnd?: OnScrollEnd;
+  onScrollStart?: OnScrollEvent;
+  onScrollCommandChange?: ({ lastChildIndex }: { lastChildIndex: number }) => void;
 }
 
 export interface ScrollHandlerStateParams {

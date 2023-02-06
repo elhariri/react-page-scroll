@@ -24,7 +24,7 @@ const Demo1 = () => {
       }}
     >
       <PageIndicatorContainer pagesNumber={6} selectedPage={currentPage} />
-      <ScrollingContainer onBeforeScroll={({ currentIndex }) => setCurrentPage(currentIndex)}>
+      <ScrollingContainer onScrollStart={({ targetIndex }) => setCurrentPage(targetIndex)}>
         <div className='page'>
           <span>Page 1</span>
         </div>
