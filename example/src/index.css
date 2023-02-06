@@ -13,6 +13,40 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  z-index: 999;
+  margin: 10px;
+}
+
+.header > * {
+  text-decoration: none;
+  color: white;
+  font-size: 0.9rem;
+  margin-right: 1rem;
+  border-radius: 9999px;
+  padding: 8px 15px;
+  padding-bottom: 10px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header > *:hover {
+  text-decoration: underline;
+}
+
+.header > .active {
+  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.header > .active:before {
+  content: '# ';
+}
+
 .title {
   font-size: 6rem;
   font-family: poppins;

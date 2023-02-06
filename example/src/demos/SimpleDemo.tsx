@@ -2,7 +2,7 @@ import React from 'react';
 
 import ScrollingContainer from 'react-page-scroll';
 
-const Demo1 = () => {
+const SimpleDemo = () => {
   return (
     <div className='title'>
       <ScrollingContainer>
@@ -23,4 +23,4 @@ const Demo1 = () => {
   );
 };
 
-export default Demo1;
+export default SimpleDemo;

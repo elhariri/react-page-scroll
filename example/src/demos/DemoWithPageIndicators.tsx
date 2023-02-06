@@ -13,7 +13,7 @@ const bgColors = [
   'rgb(5 150 105)',
 ];
 
-const Demo1 = () => {
+const DemoWithPageIndicators = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   return (
@@ -48,4 +48,4 @@ const Demo1 = () => {
   );
 };
 
-export default Demo1;
+export default DemoWithPageIndicators;
