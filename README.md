@@ -27,8 +27,6 @@ Using yarn :
 
 ## Usage
 
-You can find the CSS of the following examples at the end of this section (Usage).
-
 ### Simple example:
 
     import  React  from  'react';
@@ -42,6 +40,8 @@ You can find the CSS of the following examples at the end of this section (Usage
     };
 
     export  default  SimpleExample;
+    
+##Demo : [Simple scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/)
 
 ### Nested example:
 
@@ -61,13 +61,15 @@ this is nested scroll example where the container scrolls vertically and the nes
     };
 
     export  default  SimpleNestedExample;
+    
+##Demo : [Nested scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/demo3)
 
 ## Documentation
 
 ### Content:
 
 - [PageScroll](#1-pagescroll);
-- [NestedPageScroll](#2-pagescroll);
+- [NestedPageScroll](#2-nestedpagescroll);
 - [Props](#3-props)
 
 <br>
@@ -152,7 +154,7 @@ _\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](#1-pagescroll)). W
     - _description:_ **Sets the easing of the scroll animation**. Supports any valid CSS animation easing.
     - _type:_ **String**
 
-**Hooks:**
+**Hooks:** [check this demo for an example with hooks!](https://github.com/elhariri/react-page-scroll/blob/main/example/src/demos/NestedDemoWithPageIndicators.tsx) -- [Live preview](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/demo4)
 
 6.  **onScrollInit (Optional):**
     - _description:_ A function that is **called whenever the component will be handling the scroll**. the function receives **the current child index, number of the scrolling container children and a scroll control object to programmatically launch a scroll** as a parameter. Notice: the same scroll control object will be given inside a [\<PageScroll>](#1-pagescroll) component.
