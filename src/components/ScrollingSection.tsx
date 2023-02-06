@@ -1,13 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { ScrollDirections, ScrollHandlerState, ScrollManagerSubscribeOptions } from '../App/Scroll.types';
+import { ScrollDirections, ScrollHandlerState, ScrollingSectionProps } from './Props.types';
 import { useScrollContext } from './ScrollContext';
-
-export interface ScrollingSectionProps extends ScrollManagerSubscribeOptions {
-  children: React.ReactNode;
-  scrollEnabled?: boolean;
-  width?: string;
-  height?: string;
-}
 
 const scrollHandlerStateInitialState: ScrollHandlerState = {
   currentChildIndex: 0,
@@ -17,7 +10,7 @@ const scrollHandlerStateInitialState: ScrollHandlerState = {
   },
   childs: [],
   pagesContainer: null as unknown as HTMLElement,
-  direction: ScrollDirections.verticle,
+  direction: ScrollDirections.vertical,
   scrollEnabled: false,
   animationDuration: 400,
   isRoot: false,
@@ -29,7 +22,7 @@ export default function ScrollingSection({
   animationDuration = 400,
   animationEasing = 'cubic-bezier(0.76, 0, 0.24, 1)',
 
-  direction = ScrollDirections.verticle,
+  direction = ScrollDirections.vertical,
   isRoot = false,
   width = '100vw',
   height = '100vh',
@@ -100,7 +93,7 @@ export default function ScrollingSection({
           style={{
             transition: `transform ${animationDuration}ms ${animationEasing}`,
           }}
-          className='top-0 w-full h-full overflow-visible flex-col text-white ease-in-out'
+          className={(direction === 'vertical' ? 'flex-col' : 'flex') + ' scroll-container'}
         >
           {children}
         </div>

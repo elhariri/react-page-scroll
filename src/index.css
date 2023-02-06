@@ -1,4 +1,16 @@
+body {
+  overscroll-behavior-x: contain;
+}
+
+.flex {
+  display: flex;
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
+}
+
+.scroll-container > * {
+  flex-shrink: 0;
 }

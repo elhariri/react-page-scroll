@@ -75,9 +75,9 @@ class SectionScrollHandler {
   private attachScrollListener() {
     const container = this.container;
     if (container) {
-      container.addEventListener('wheel', this.bindedShouldHandleWheelScroll);
+      container.addEventListener('wheel', this.bindedShouldHandleWheelScroll, { passive: false });
 
-      container.parentElement?.addEventListener('touchmove', this.bindedShouldHandleTouchScroll);
+      container.parentElement?.addEventListener('touchmove', this.bindedShouldHandleTouchScroll, { passive: false });
 
       window.addEventListener('resize', this.bindedHandleResize);
     }
@@ -104,31 +104,27 @@ class SectionScrollHandler {
   }
 
   private captureOngoingWheelScrollState(wheelEvent: WheelEvent<HTMLDivElement>): ScrollState {
-    const { direction } = this.scrollUIState,
-      isVerticle = Math.abs(wheelEvent.deltaY) > Math.abs(wheelEvent.deltaX);
-
     let YDirection: YdirectionState = 'stationary',
       XDirection: XdirectionState = 'stationary';
 
-    if (isVerticle && direction === 'verticle') {
-      if (Math.abs(wheelEvent.deltaY) > 1) {
+    const DeltaY = Math.abs(wheelEvent.deltaY),
+      DeltaX = Math.abs(wheelEvent.deltaX);
+
+    if (DeltaY > DeltaX) {
+      if (DeltaY > 1) {
         if (wheelEvent.deltaY > 0) {
           YDirection = 'down';
         } else {
           YDirection = 'up';
         }
-      } else {
-        YDirection = 'stationary';
       }
-    } else if (!isVerticle && direction === 'horizontal') {
-      if (Math.abs(wheelEvent.deltaX) > 1) {
+    } else {
+      if (DeltaX > 1) {
         if (wheelEvent.deltaX > 0) {
           XDirection = 'left';
         } else {
           XDirection = 'right';
         }
-      } else {
-        XDirection = 'stationary';
       }
     }
 
@@ -141,7 +137,7 @@ class SectionScrollHandler {
   }
 
   private captureOngoingTouchScrollState(touchEvent: TouchEvent): ScrollState {
-    const { direction, currentChildIndex, childs } = this.scrollUIState;
+    const { currentChildIndex, childs } = this.scrollUIState;
     let YDirection: YdirectionState = 'stationary',
       XDirection: XdirectionState = 'stationary';
 
@@ -157,21 +153,21 @@ class SectionScrollHandler {
         const { screenY, screenX } = touchEvent.changedTouches[0];
         const YDelta = screenY - this.lastTouchMouve.screenY;
         const XDelta = screenX - this.lastTouchMouve.screenX;
-        const isVerticle = Math.abs(YDelta) > Math.abs(XDelta);
+        const isvertical = Math.abs(YDelta) > Math.abs(XDelta);
 
-        const sensitivity = 10;
+        const sensitivity = 0;
 
-        if (isVerticle && direction === 'verticle') {
+        if (isvertical) {
           if (YDelta > sensitivity) {
             YDirection = 'up';
           } else if (YDelta < -sensitivity) {
             YDirection = 'down';
           }
-        } else if (!isVerticle && direction === 'horizontal') {
+        } else {
           if (XDelta > sensitivity) {
-            XDirection = 'left';
-          } else if (XDelta < -sensitivity) {
             XDirection = 'right';
+          } else if (XDelta < -sensitivity) {
+            XDirection = 'left';
           }
         }
       } else {
@@ -192,8 +188,26 @@ class SectionScrollHandler {
   private setNextChild() {
     const { currentChildIndex, childs, scrollState } = this.scrollUIState;
 
-    if (this.scrollUIState.direction === ScrollDirections.verticle && scrollState.YDirection !== 'stationary') {
+    if (this.scrollUIState.direction === ScrollDirections.vertical && scrollState.YDirection !== 'stationary') {
       if (scrollState.YDirection === 'down') {
+        if (currentChildIndex < childs.length - 1) {
+          this.scrollUIState.currentChildIndex++;
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (currentChildIndex > 0) {
+          this.scrollUIState.currentChildIndex--;
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+
+    if (this.scrollUIState.direction === ScrollDirections.horizontal && scrollState.XDirection !== 'stationary') {
+      if (scrollState.XDirection === 'left') {
         if (currentChildIndex < childs.length - 1) {
           this.scrollUIState.currentChildIndex++;
           return true;
@@ -236,6 +250,9 @@ class SectionScrollHandler {
   }
 
   private shouldHandleWheelScrollEvent(event: WheelEvent<HTMLDivElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.captureOngoingWheelScrollState(event);
     this.wheelScrollEvent.controlOngoingEvent(event, this.scrollUIState.scrollState);
     if (this.wheelScrollEvent.id > this.lasHandledEventId) {
@@ -245,14 +262,14 @@ class SectionScrollHandler {
   }
 
   private shouldHandleTouchScrollEvent(event: TouchEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.captureOngoingTouchScrollState(event);
     this.touchScrollEvent.controlOngoingEvent();
     const { YDirection, XDirection } = this.scrollUIState.scrollState;
-    const { direction } = this.scrollUIState;
 
-    const shouldScroll =
-      (YDirection !== 'stationary' && direction === 'verticle') ||
-      (XDirection !== 'stationary' && direction === 'horizontal');
+    const shouldScroll = YDirection !== 'stationary' || XDirection !== 'stationary';
 
     if (this.touchScrollEvent.id > this.lasHandledEventId && shouldScroll) {
       this.lasHandledEventId = this.touchScrollEvent.id; // last handled wheel direction
@@ -264,7 +281,6 @@ class SectionScrollHandler {
     this.blockScroll();
 
     const shouldScroll = this.setNextChild();
-
     if (shouldScroll) {
       this.scroll();
     } else {
@@ -289,16 +305,16 @@ class SectionScrollHandler {
     let YDirection: YdirectionState = 'stationary',
       XDirection: XdirectionState = 'stationary';
 
-    const isVerticle = direction === 'verticle';
+    const isvertical = direction === 'vertical';
 
     if (currentChildIndex > targetChildIndex) {
-      if (isVerticle) {
+      if (isvertical) {
         YDirection = 'up';
       } else {
         XDirection = 'left';
       }
     } else {
-      if (isVerticle) {
+      if (isvertical) {
         YDirection = 'down';
       } else {
         XDirection = 'right';

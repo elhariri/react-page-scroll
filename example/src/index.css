@@ -15,6 +15,61 @@ code {
 
 .title {
   font-size: 6rem;
+  font-family: poppins;
+  text-align: center;
+  color: white;
+  background-color: rgb(29 78 216);
+}
+
+.page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.small-page {
+  height: 50vh;
+  background-color: yellowgreen;
+}
+
+.page span {
+  margin: auto;
+}
+
+.scroll-indicator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+.bg1 {
+  background-color: rgb(29 78 216);
+}
+
+.bg2 {
+  background-color: rgb(219 39 119);
+}
+
+.bg3 {
+  background-color: rgb(220 38 38);
+}
+
+.bg4 {
+  background-color: rgb(8 145 178);
+}
+
+.bg5 {
+  background-color: rgb(147 51 234);
+}
+
+.bg6 {
+  background-color: rgb(5 150 105);
 }
 
 @media (max-width: 1250px) {

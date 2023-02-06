@@ -19,35 +19,29 @@ const Demo1 = () => {
   return (
     <motion.div
       className='title'
-      style={{
-        fontFamily: 'poppins',
-        textAlign: 'center',
-        color: 'white',
-        backgroundColor: bgColors[0],
-      }}
       animate={{
         backgroundColor: bgColors[currentPage],
       }}
     >
       <PageIndicatorContainer pagesNumber={6} selectedPage={currentPage} />
       <ScrollingContainer onBeforeScroll={({ currentIndex }) => setCurrentPage(currentIndex)}>
-        <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
-          <span style={{ margin: 'auto' }}>Page 1</span>
+        <div className='page'>
+          <span>Page 1</span>
         </div>
-        <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
-          <span style={{ margin: 'auto' }}>Page 2</span>
+        <div className='page'>
+          <span>Page 2</span>
         </div>
-        <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
-          <span style={{ margin: 'auto' }}>Page 3</span>
+        <div className='page'>
+          <span>Page 3</span>
         </div>
-        <div style={{ width: '100vw', height: '50vh', backgroundColor: 'yellowgreen', display: 'flex' }}>
-          <span style={{ margin: 'auto' }}>Page 4</span>
+        <div className='page' style={{ height: '50vh', backgroundColor: 'yellowgreen' }}>
+          <span>Page 4</span>
         </div>
-        <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
-          <span style={{ margin: 'auto' }}>Page 5</span>
+        <div className='page'>
+          <span>Page 5</span>
         </div>
-        <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
-          <span style={{ margin: 'auto' }}>Page 6</span>
+        <div className='page'>
+          <span>Page 6</span>
         </div>
       </ScrollingContainer>
     </motion.div>

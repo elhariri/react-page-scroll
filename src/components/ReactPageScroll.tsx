@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollManager } from '../App/ScrollManager';
+import { ReactPageScrollProps } from './Props.types';
 import { ScrollContext } from './ScrollContext';
-import ScrollingSection, { ScrollingSectionProps } from './ScrollingSection';
+import ScrollingSection from './ScrollingSection';
 
-export default function ScrollingContainer({ children, ...props }: ScrollingSectionProps) {
+export default function ReactPageScroll({ children, ...props }: ReactPageScrollProps) {
   const [scrollManager, setScrollManager] = useState<ScrollManager | null>(null);
 
   useEffect(() => {

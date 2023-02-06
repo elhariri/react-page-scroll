@@ -82,10 +82,30 @@ export class ScrollManager {
 
   private hasReachedEndOfDocument(currentChildIndex: number, childs: HTMLElement[], scrollState: ScrollState) {
     const scrollMove = this.getScrollMove(scrollState) || '';
-    const reachedEndOfDocument = ['down', 'right'].includes(scrollMove) && currentChildIndex === childs.length - 1;
-    const reachedStartOfDocument = ['up', 'left'].includes(scrollMove) && !currentChildIndex;
+
+    const reachedEndOfDocument = ['down', 'left'].includes(scrollMove) && currentChildIndex === childs.length - 1;
+    const reachedStartOfDocument = ['up', 'right'].includes(scrollMove) && !currentChildIndex;
 
     return reachedEndOfDocument || reachedStartOfDocument;
+  }
+
+  private shouldParentResumeScrolling(scrollState: ScrollState) {
+    const scrollMove = this.getScrollMove(scrollState) || '';
+
+    const currentScrollDirection = this.scrollHandlersMap[this.scrollStack.current.hash].UIScrollStateCopy.direction;
+    const parentScrollDirection = this.scrollHandlersMap[this.scrollStack.previous.hash].UIScrollStateCopy.direction;
+
+    if (currentScrollDirection !== parentScrollDirection) {
+      if (parentScrollDirection === 'horizontal' && ['left', 'right'].includes(scrollMove)) {
+        return true;
+      }
+
+      if (parentScrollDirection === 'vertical' && ['up', 'down'].includes(scrollMove)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private transferControlToChild(childNodeHash: string) {
@@ -165,7 +185,10 @@ export class ScrollManager {
   }
 
   shouldCedeControlToParent({ childs, currentChildIndex, scrollState }: ScrollHandlerState) {
-    if (this.hasReachedEndOfDocument(currentChildIndex, childs, scrollState)) {
+    if (
+      this.shouldParentResumeScrolling(scrollState) ||
+      this.hasReachedEndOfDocument(currentChildIndex, childs, scrollState)
+    ) {
       return this.transferControlToParent(scrollState);
     }
 

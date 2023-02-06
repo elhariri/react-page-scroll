@@ -1,8 +1,8 @@
-import ScrollingContainer from './components/ScrollingContainer';
-import NestedScrollingSection from './components/NestedScrollingSection';
+import ReactPageScroll from './components/ReactPageScroll';
+import NestedReactPageScroll from './components/NestedReactPageScroll';
 
 import './index.css';
 
-export { NestedScrollingSection };
+export { NestedReactPageScroll };
 
-export default ScrollingContainer;
+export default ReactPageScroll;

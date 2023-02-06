@@ -1,5 +1,5 @@
 export enum ScrollDirections {
-  verticle = 'verticle',
+  vertical = 'vertical',
   horizontal = 'horizontal',
 }
 
@@ -21,7 +21,7 @@ export interface ScrollState {
 }
 
 export interface ScrollManagerSubscribeOptionsParams {
-  direction?: ScrollDirections;
+  direction?: ScrollDirection;
   isRoot?: boolean;
   animationDuration?: number;
   animationEasing?: string;
@@ -79,7 +79,7 @@ export interface ScrollHandlerStateParams {
   currentChildIndex: number;
   childs: HTMLElement[];
   pagesContainer: HTMLElement;
-  direction: ScrollDirections;
+  direction: ScrollDirection;
   scrollEnabled: boolean;
   animationDuration: number;
   isRoot: boolean;

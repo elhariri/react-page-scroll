@@ -1,4 +1,4 @@
-import { ScrollDirections } from './Scroll.types';
+import { ScrollDirection, ScrollDirections } from './Scroll.types';
 
 class UIScrollAnimation {
   static fireScroll({
@@ -12,7 +12,7 @@ class UIScrollAnimation {
     currentChildIndex: number;
     childs: HTMLElement[];
     pagesContainer: HTMLElement;
-    direction: ScrollDirections;
+    direction: ScrollDirection;
     animationDuration: number;
     onScrollEnd: () => void;
   }) {
