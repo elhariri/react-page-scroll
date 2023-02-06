@@ -159,7 +159,7 @@ this is nested scroll example where the container scrolls vertically and the nes
 
 ### Content:
 
-- [PageScroll](#1.-pagescroll);
+- [PageScroll](#1-pagescroll);
 - NestedReactPageScroll;
 - Props
 - hooks
@@ -170,7 +170,7 @@ this is nested scroll example where the container scrolls vertically and the nes
 
 **_\<PageScroll>_** is a higher level container for enabling scroll. you can set the scroll direction as horizontal or vertical, the animation duration in ms, the css animation easing and the width and height of the container. You can find more details on the [Props](#props) section.
 
-**_\<PageScroll>_** automatically identifies its direct children and designates them as pages for scrolling from or to. This behavior was intended to make its usage simpler. So don't put anything that you don't consider a page as a direct child of **\***\<PageScroll>**\***.
+**_\<PageScroll>_** automatically identifies its direct children and designates them as pages for scrolling from or to. This behavior was intended to make its usage simpler. So don't put anything that you don't consider a page as a direct child of **_\<PageScroll>_**.
 
 **_\<PageScroll>_** supports nested scroll but through the **_\<NestedPageScroll>_** component. Using **_\<PageScroll>_** inside itself will cause an unintended behavior. Also using **_\<NestedPageScroll>_** outside of a **_\<PageScroll>_** will throw an error.
 
