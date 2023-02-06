@@ -9,6 +9,6 @@ export interface ScrollingSectionProps extends ScrollManagerSubscribeOptions {
   height?: string;
 }
 
-export type ReactPageScrollProps = Omit<ScrollingSectionProps, 'scrollEnabled' | 'isRoot'>;
+export type PageScrollProps = Omit<ScrollingSectionProps, 'scrollEnabled' | 'isRoot'>;
 
 export { ScrollHandlerState, ScrollDirections };

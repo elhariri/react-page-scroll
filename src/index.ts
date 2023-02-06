@@ -1,8 +1,8 @@
-import ReactPageScroll from './components/ReactPageScroll';
-import NestedReactPageScroll from './components/NestedReactPageScroll';
+import PageScroll from './components/PageScroll';
+import NestedPageScroll from './components/NestedPageScroll';
 
 import './index.css';
 
-export { NestedReactPageScroll };
+export { NestedPageScroll };
 
-export default ReactPageScroll;
+export default PageScroll;

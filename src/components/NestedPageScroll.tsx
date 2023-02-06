@@ -1,8 +1,8 @@
 import React from 'react';
-import { ReactPageScrollProps } from './Props.types';
+import { PageScrollProps } from './Props.types';
 import ScrollingSection from './ScrollingSection';
 
-export default function NestedReactPageScroll({ children, ...props }: ReactPageScrollProps) {
+export default function NestedPageScroll({ children, ...props }: PageScrollProps) {
   return (
     <ScrollingSection {...props} scrollEnabled={true} isRoot={false}>
       {children}

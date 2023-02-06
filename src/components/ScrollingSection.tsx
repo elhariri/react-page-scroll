@@ -28,7 +28,7 @@ export default function ScrollingSection({
   height = '100vh',
   onBeforeScroll = () => {},
   onScrollInit = () => {},
-  onScrollExit = () => {},
+  onScrollCommandChange = () => {},
   onAfterScroll = () => {},
 }: ScrollingSectionProps) {
   const scrollStateRef = useRef<ScrollHandlerState>({
@@ -40,16 +40,16 @@ export default function ScrollingSection({
     onBeforeScroll,
     onAfterScroll,
     onScrollInit,
-    onScrollExit,
+    onScrollCommandChange,
   });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollSubscribed = useRef(false);
 
-  const contextScrollManager = useScrollContext();
+  const { scrollManager, scrollContext } = useScrollContext();
 
   useEffect(() => {
-    if (contextScrollManager && !scrollSubscribed.current) {
+    if (scrollManager && !scrollSubscribed.current) {
       const containerRef = scrollContainerRef.current;
       let scrollState = scrollStateRef.current;
 
@@ -65,11 +65,15 @@ export default function ScrollingSection({
           childs,
         };
 
-        contextScrollManager.subscribe(scrollContainerRef.current, scrollState);
+        scrollManager.subscribe(scrollContainerRef.current, scrollState);
         scrollSubscribed.current = true;
       }
     }
-  }, [contextScrollManager, isRoot]);
+  }, [scrollManager, isRoot]);
+
+  if (!scrollContext && !isRoot) {
+    throw new Error('Only use <NestedPageScroll> inside <PageScroll>');
+  }
 
   return (
     <div

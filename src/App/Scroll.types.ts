@@ -63,7 +63,7 @@ export interface ScrollHandlerHooks {
   }) => void;
   onAfterScroll?: OnScrollEnd;
   onBeforeScroll?: OnScrollEvent;
-  onScrollExit?: ({
+  onScrollCommandChange?: ({
     container,
     currentChildIndex,
     numberOfChilds,
