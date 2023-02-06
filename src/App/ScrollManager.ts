@@ -86,7 +86,16 @@ export class ScrollManager {
     const reachedEndOfDocument = ['down', 'left'].includes(scrollMove) && currentChildIndex === childs.length - 1;
     const reachedStartOfDocument = ['up', 'right'].includes(scrollMove) && !currentChildIndex;
 
-    return reachedEndOfDocument || reachedStartOfDocument;
+    const reachedDocumentStartOrEnd = reachedEndOfDocument || reachedStartOfDocument;
+
+    if (this.scrollStack.previous) {
+      const currentScrollDirection = this.scrollHandlersMap[this.scrollStack.current.hash].UIScrollStateCopy.direction;
+      const parentScrollDirection = this.scrollHandlersMap[this.scrollStack.previous.hash].UIScrollStateCopy.direction;
+
+      return currentScrollDirection === parentScrollDirection && reachedDocumentStartOrEnd;
+    }
+
+    return reachedDocumentStartOrEnd;
   }
 
   private shouldParentResumeScrolling(scrollState: ScrollState) {
