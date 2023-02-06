@@ -128,17 +128,25 @@ _\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](<(#1-pagescroll)>)
 ### 3. Props:
 
 1.  **direction (Optional)(default: _"vertical"_)**:
+
     - _description:_ **Sets the scroll direction**, supports only "vertical" or "horizontal"
     - _type:_ **"vertical" | "horizontal"**
+
 2.  **width (Optional)(default: _"100vw"_)**:
+
     - _description:_ **Sets the width of the scroll container**, supports any valid CSS width value.
     - _type:_ **String**
+
 3.  **height (Optional)(default: _"100vh"_)**:
+
     - _description:_ **Sets the height of the scroll container**, supports any valid CSS height value.
     - _type:_ **String**
+
 4.  **animationDuration _~in ms_ (Optional)(default: _300_)**:
+
     - _description:_ **Sets the duration of the scroll animation in ms**. Supports any positive number
     - _type:_ **Number**
+
 5.  **animationEasing (Optional)(default: _"cubic-bezier(0.76, 0, 0.24, 1)"_)**:
     - _description:_ **Sets the easing of the scroll animation**. Supports any valid CSS animation easing.
     - _type:_ **String**
