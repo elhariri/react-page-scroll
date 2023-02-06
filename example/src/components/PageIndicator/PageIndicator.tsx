@@ -19,10 +19,10 @@ function PageIndicatorPoint({
       <motion.div
         animate={{
           left: '35%',
-          height: '100%',
-          width: '1.6rem',
+          height: '120px',
+          width: '20px',
         }}
-        className={`relative first:mt-1 left-[0%] last:mb-1 w-2 h-2 lg:w-4 lg:h-4 flex border-2 border-white/5 rounded-full cursor-pointer flex-shrink-0`}
+        style={{ position: 'relative' }}
       >
         <PageIndicator nestedScroll={null} pagesNumber={numberOfChilds} selectedPage={currentIndex} isNested={true} />
       </motion.div>
@@ -31,11 +31,12 @@ function PageIndicatorPoint({
 
   return (
     <motion.div
+      //initial={{ width: '14px', height: '14px' }}
       animate={{ opacity: isSelected ? 1 : 0.2 }}
       style={{
         display: 'flex',
-        width: '14px',
-        height: '14px',
+        width: '20px',
+        height: '20px',
         border: '3px solid white',
         borderRadius: '99999px',
         margin: '20px',
@@ -82,9 +83,6 @@ function PageIndicator({
         height: isNested ? '100%' : 'fit-content',
         justifyContent: 'space-between',
       }}
-      /*  className={`m-auto flex-col w-fit lg:px-1.5 rounded-full ${
-        isNested ? 'lg:px-0 h-full flex flex-col justify-between' : ''
-      }`} */
     >
       {childs}
     </motion.div>
