@@ -56,7 +56,7 @@ export interface ScrollHandlerHooks {
   }) => void;
   onScrollEnd?: OnScrollEnd;
   onScrollStart?: OnScrollEvent;
-  onScrollCommandChange?: ({ lastChildIndex }: { lastChildIndex: number }) => void;
+  onScrollCommandCede?: ({ lastChildIndex }: { lastChildIndex: number }) => void;
 }
 
 export interface ScrollHandlerStateParams {

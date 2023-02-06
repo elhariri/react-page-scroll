@@ -172,7 +172,7 @@ _\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](#1-pagescroll)). W
 
 <br>
 
-9.  **onScrollCommandChange (Optional):**
+9.  **onScrollCommandCede (Optional):**
     - _description:_ A function **fired when the scroll will no longer be handled by the [\<PageScroll>](#1-pagescroll) or the [\<NestedPageScroll>](#2-nestedpagescroll) component you passed the function into** as it is passing control to another child or parent scroll component. the function **receives an object with the last page index before ceding control** as a parameter.
     - _type:_ ({ container: HTMLElement; currentChildIndex: number; numberOfChilds: number; }) => void
 

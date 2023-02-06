@@ -41,7 +41,7 @@ const NestedDemoWithPageIndicators = () => {
         <NestedPageScroll
           onScrollInit={setNestedtStateOnScrollInit}
           onScrollStart={setNestedtStateOnScrollStart}
-          onScrollCommandChange={() => setNestedState(null)}
+          onScrollCommandCede={() => setNestedState(null)}
         >
           <div className='page bg2'>
             <span>Page 2 1/2</span>

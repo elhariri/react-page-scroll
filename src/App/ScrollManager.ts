@@ -156,10 +156,10 @@ export class ScrollManager {
           this.scrollHandlersMap[currentHash].disable();
         }
 
-        const { onScrollCommandChange, pagesContainer, currentChildIndex } =
+        const { onScrollCommandCede, pagesContainer, currentChildIndex } =
           this.scrollHandlersMap[currentHash].UIScrollStateCopy;
-        if (pagesContainer.parentElement && onScrollCommandChange) {
-          onScrollCommandChange({
+        if (pagesContainer.parentElement && onScrollCommandCede) {
+          onScrollCommandCede({
             lastChildIndex: currentChildIndex,
           });
         }

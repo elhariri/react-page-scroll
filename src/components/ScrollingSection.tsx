@@ -28,7 +28,7 @@ export default function ScrollingSection({
   height = '100vh',
   onScrollStart = () => {},
   onScrollInit = () => {},
-  onScrollCommandChange = () => {},
+  onScrollCommandCede = () => {},
   onScrollEnd = () => {},
 }: ScrollingSectionProps) {
   const scrollStateRef = useRef<ScrollHandlerState>({
@@ -40,7 +40,7 @@ export default function ScrollingSection({
     onScrollStart,
     onScrollEnd,
     onScrollInit,
-    onScrollCommandChange,
+    onScrollCommandCede,
   });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
