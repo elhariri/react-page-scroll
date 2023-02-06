@@ -36,9 +36,9 @@ You can find the CSS of the following examples at the end of this section (Usage
 
     const  SimpleExample  = () => {
         return (<PageScroll width="100vw" height="100vh">
-    				<div id="page1" className='page'></div>
-    				<div id="page2" className='page'></div>
-    			</PageScroll>)
+    			<div id="page1" className='page'></div>
+    			<div id="page2" className='page'></div>
+    	    </PageScroll>)
     };
 
     export  default  SimpleExample;
@@ -52,12 +52,12 @@ this is nested scroll example where the container scrolls vertically and the nes
 
     const  SimpleNestedExample  = () => {
         return (<PageScroll width="100vw" height="100vh">
-    				<NestedPageScroll direction="horizontal" width="100vw" height="100vh">
-    					<div id="page1-1" className='page'></div>
-    					<div id="page1-2" className='page'></div>
-    				</NestedPageScroll>
-    				<div id="page2" className='page'></div>
-    			</PageScroll>)
+    		<NestedPageScroll direction="horizontal" width="100vw" height="100vh">
+    			<div id="page1-1" className='page'></div>
+    			<div id="page1-2" className='page'></div>
+    		</NestedPageScroll>
+    		<div id="page2" className='page'></div>
+    	    </PageScroll>)
     };
 
     export  default  SimpleNestedExample;
@@ -89,9 +89,9 @@ _\<PageScroll>_ supports nested scroll but through the [_\<NestedPageScroll>_ ](
 
     const ScrollingPages = () => {
     	return (<PageScroll width="100vw" height="100vh">
-    				<div id="page1" className='page'></div>
-    				<div id="page2" className='page'></div>
-    			</PageScroll>)
+    		    <div id="page1" className='page'></div>
+    		    <div id="page2" className='page'></div>
+    	        </PageScroll>)
     }
 
 <br>
@@ -112,12 +112,12 @@ _\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](#1-pagescroll)). W
 
     const ScrollingPages = () => {
     	return (<PageScroll width="100vw" height="100vh">
-    				<NestedPageScroll direction="horizontal" width="100vw" height="100vh">
-    					<div id="page1-1" className='page'></div>
-    					<div id="page1-2" className='page'></div>
-    				</NestedPageScroll>
-    				<div id="page2" className='page'></div>
-    			</PageScroll>)
+    			<NestedPageScroll direction="horizontal" width="100vw" height="100vh">
+    				<div id="page1-1" className='page'></div>
+    				<div id="page1-2" className='page'></div>
+    			</NestedPageScroll>
+    			<div id="page2" className='page'></div>
+    	        </PageScroll>)
     }
 
 <br>
