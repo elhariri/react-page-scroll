@@ -159,18 +159,28 @@ this is nested scroll example where the container scrolls vertically and the nes
 
 ### Content:
 
-- [ReactPageScroll](#ReactPageScroll);
+- [PageScroll](#1.-pagescroll);
 - NestedReactPageScroll;
 - Props
 - hooks
 
-### ReactPageScroll (children: ReactNode, Props: [ReactPageScrollProps](#Props)):
+### 1. PageScroll
 
-\<ReactPageScroll> is a higher level container for enabling scroll. you can set the scroll direction as horizontal or vertical, the animation duration in ms, the css animation easing and the width and height of the container. You can find more details on the [Props](#props) section.
+**Type: (children: ReactNode, Props: [PageScrollProps](#Props)) => ReactNode**
 
-\<ReactPageScroll> Automatically identifies its direct children and designates them as pages for scrolling from or to. This behavior was intended to make its usage simpler. So don't put anything that you don't consider a page as a direct child of <ReactPageScroll>.
+**_\<PageScroll>_** is a higher level container for enabling scroll. you can set the scroll direction as horizontal or vertical, the animation duration in ms, the css animation easing and the width and height of the container. You can find more details on the [Props](#props) section.
 
-\<ReactPageScroll> supports nested scroll but through the \<NestedReactPageScroll> component. Using \<ReactPageScroll> inside itself will cause an unintended behavior. Also using \<NestedReactPageScroll> outside of a \<ReactPageScroll> will throw an error.
+**_\<PageScroll>_** automatically identifies its direct children and designates them as pages for scrolling from or to. This behavior was intended to make its usage simpler. So don't put anything that you don't consider a page as a direct child of **\***\<PageScroll>**\***.
+
+**_\<PageScroll>_** supports nested scroll but through the **_\<NestedPageScroll>_** component. Using **_\<PageScroll>_** inside itself will cause an unintended behavior. Also using **_\<NestedPageScroll>_** outside of a **_\<PageScroll>_** will throw an error.
+
+### NestedPageScroll:
+
+**Type: (children: ReactNode, Props: [PageScrollProps](#Props)) => ReactNode**
+
+_emphasized text_
+
+### Props:
 
 ## Contributing
 
