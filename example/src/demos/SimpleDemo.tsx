@@ -15,7 +15,7 @@ const SimpleDemo = () => {
         <div className='page bg3 small-page'>
           <span>Page 3</span>
         </div>
-        <div className='page bg4'>
+        <div className='page bg5'>
           <span>Page 4</span>
         </div>
       </ScrollingContainer>
