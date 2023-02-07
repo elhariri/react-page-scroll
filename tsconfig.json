@@ -6,7 +6,7 @@
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
-    "declaration": false,
+    "declaration": true,
     "sourceMap": false,
     "rootDir": "./src",
     "outDir": "./dist/esm",

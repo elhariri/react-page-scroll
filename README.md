@@ -20,7 +20,7 @@ Using yarn :
 - Nested scroll
 - Easy API
 - Hooks
-- Lightweight
+- Lightweight (12.6 kB)
 - Fluid CSS based animation
 
 **Notice:** When using a mobile device and scrolling within a nested scroll section, weak user gestures may result in no scrolling. A fix is in development.
@@ -40,7 +40,7 @@ Using yarn :
     };
 
     export  default  SimpleExample;
-    
+
 ##Demo : [Simple scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/)
 
 ### Nested example:
@@ -61,7 +61,7 @@ this is nested scroll example where the container scrolls vertically and the nes
     };
 
     export  default  SimpleNestedExample;
-    
+
 ##Demo : [Nested scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/demo3)
 
 ## Documentation
@@ -159,10 +159,10 @@ _\<NestedPageScrol>_ is almost identical to [_\<pageScroll>_](#1-pagescroll)). W
 6.  **onScrollInit (Optional):**
     - _description:_ A function that is **called whenever the component will be handling the scroll**. the function receives **the current child index, number of the scrolling container children and a scroll control object to programmatically launch a scroll** as a parameter. Notice: the same scroll control object will be given inside a [\<PageScroll>](#1-pagescroll) component.
     - _type:_ (args: { currentChildIndex: number; numberOfChilds: number; scrollControl: ScrollControls; }) => void
-    - **scrollControl** has three methods: 
-        - **scrollTo**: that receives the target you want to scroll to;
-        - **scrollToNext**: scroll into the next child depending on the direction you've set;
-        - **scrollToPrevious**: scroll into the previous child depending on the direction you've set;
+    - **scrollControl** has three methods:
+      - **scrollTo**: that receives the target you want to scroll to;
+      - **scrollToNext**: scroll into the next child depending on the direction you've set;
+      - **scrollToPrevious**: scroll into the previous child depending on the direction you've set;
 
 <br>
 
