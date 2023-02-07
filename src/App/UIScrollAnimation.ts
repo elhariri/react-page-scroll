@@ -1,4 +1,4 @@
-import { ScrollDirection, ScrollDirections } from './Scroll.types';
+import { ScrollAxis, ScrollAxes } from './Scroll.types';
 
 class UIScrollAnimation {
   static fireScroll({
@@ -12,7 +12,7 @@ class UIScrollAnimation {
     currentChildIndex: number;
     childs: HTMLElement[];
     pagesContainer: HTMLElement;
-    direction: ScrollDirection;
+    direction: ScrollAxis;
     animationDuration: number;
     onScrollEnd: () => void;
   }) {
@@ -20,7 +20,7 @@ class UIScrollAnimation {
       offest: 'offsetHeight' | 'offsetWidth' = 'offsetHeight',
       animation = 'translateY';
 
-    if (direction === ScrollDirections.horizontal) {
+    if (direction === ScrollAxes.horizontal) {
       animation = 'translateX';
       offest = 'offsetWidth';
     }

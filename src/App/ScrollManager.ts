@@ -1,4 +1,4 @@
-import { ScrollControls, ScrollHandlerState, ScrollStackItem, ScrollState } from './Scroll.types';
+import { ScrollControls, ScrollHandlerState, ScrollStackItem } from './Scroll.types';
 import SectionScrollHandler from './SectionScrollHandler';
 
 class ScrollStack {
@@ -59,14 +59,14 @@ class ScrollControl implements ScrollControls {
   }
 }
 
-export class ScrollManager {
+/* export class ScrollManager {
   private scrollStack: ScrollStack = new ScrollStack();
 
   private scrollHandlersMap: { [key: string]: SectionScrollHandler } = {};
 
   private scrollControl: ScrollControls = new ScrollControl(this);
 
-  private getScrollMove(scrollState: ScrollState) {
+  private getScrollMove(scrollState: ScrollDirection) {
     const { XDirection, YDirection } = scrollState;
 
     if (YDirection !== 'stationary') {
@@ -80,7 +80,7 @@ export class ScrollManager {
     return null;
   }
 
-  private hasReachedEndOfDocument(currentChildIndex: number, childs: HTMLElement[], scrollState: ScrollState) {
+  private hasReachedEndOfDocument(currentChildIndex: number, childs: HTMLElement[], scrollState: ScrollDirection) {
     const scrollMove = this.getScrollMove(scrollState) || '';
 
     const reachedEndOfDocument = ['down', 'left'].includes(scrollMove) && currentChildIndex === childs.length - 1;
@@ -98,7 +98,7 @@ export class ScrollManager {
     return reachedDocumentStartOrEnd;
   }
 
-  private shouldParentResumeScrolling(scrollState: ScrollState) {
+  private shouldParentResumeScrolling(scrollState: ScrollDirection) {
     const scrollMove = this.getScrollMove(scrollState) || '';
 
     const currentScrollDirection = this.scrollHandlersMap[this.scrollStack.current.hash].UIScrollStateCopy.direction;
@@ -140,7 +140,7 @@ export class ScrollManager {
     return true;
   }
 
-  private transferControlToParent(scrollState: ScrollState) {
+  private transferControlToParent(scrollState: ScrollDirection) {
     for (let i = this.scrollStack.length - 2; i >= 0; i--) {
       const {
         scrollState: { reachedEndOfDocument, direction },
@@ -224,6 +224,51 @@ export class ScrollManager {
     }
 
     return sectionScrollHandler;
+  }
+} */
+
+export class ScrollManager {
+  private scrollStack: ScrollStack = new ScrollStack();
+
+  private scrollHandlersMap: { [key: string]: SectionScrollHandler } = {};
+
+  private scrollControl: ScrollControls = new ScrollControl(this);
+
+  private initializeScrollHandler(sectionScrollHandler: SectionScrollHandler) {
+    sectionScrollHandler.init(this.scrollControl);
+  }
+
+  get activeScrollHandler() {
+    return this.scrollHandlersMap[this.scrollStack.current.hash];
+  }
+
+  subscribe(container: HTMLDivElement, scrollUIState: ScrollHandlerState) {
+    const sectionScrollHandler = new SectionScrollHandler(container, scrollUIState /* , this */);
+
+    const { isRoot } = scrollUIState;
+
+    if (isRoot) {
+      this.scrollHandlersMap.root = sectionScrollHandler;
+      this.scrollStack.push({
+        hash: 'root',
+        scrollState: {
+          reachedEndOfDocument: false,
+          direction: null,
+        },
+      });
+      this.initializeScrollHandler(sectionScrollHandler);
+    } else {
+      const hash = 'nested-' + (Object.keys(this.scrollHandlersMap).length + 1);
+      this.scrollHandlersMap[hash] = sectionScrollHandler;
+
+      (sectionScrollHandler.container?.parentElement as HTMLDivElement).setAttribute('data-react-scroller', hash);
+    }
+
+    return sectionScrollHandler;
+  }
+
+  handleScroll() {
+    console.log('SCROLL HANDLED');
   }
 }
 

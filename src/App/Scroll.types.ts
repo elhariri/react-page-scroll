@@ -1,4 +1,4 @@
-export enum ScrollDirections {
+export enum ScrollAxes {
   vertical = 'vertical',
   horizontal = 'horizontal',
 }
@@ -8,20 +8,20 @@ export enum DataSetsAttributes {
   reactScrollPageIndex = 'react-scroll-page-index',
 }
 
-export type ScrollDirection = `${ScrollDirections}`;
+export type ScrollAxis = `${ScrollAxes}`;
 
 export type XdirectionState = 'left' | 'right' | 'stationary';
 export type YdirectionState = 'up' | 'down' | 'stationary';
 
 export type ScrollMove = 'up' | 'down' | 'left' | 'right' | null;
 
-export interface ScrollState {
+export interface ScrollDirection {
   YDirection: YdirectionState;
   XDirection: XdirectionState;
 }
 
 export interface ScrollManagerSubscribeOptionsParams {
-  direction?: ScrollDirection;
+  direction?: ScrollAxis;
   isRoot?: boolean;
   animationDuration?: number;
   animationEasing?: string;
@@ -60,11 +60,11 @@ export interface ScrollHandlerHooks {
 }
 
 export interface ScrollHandlerStateParams {
-  scrollState: ScrollState;
+  scrollState: ScrollDirection;
   currentChildIndex: number;
   childs: HTMLElement[];
   pagesContainer: HTMLElement;
-  direction: ScrollDirection;
+  direction: ScrollAxis;
   scrollEnabled: boolean;
   animationDuration: number;
   isRoot: boolean;

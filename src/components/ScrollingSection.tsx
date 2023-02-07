@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ScrollDirections, ScrollHandlerState, ScrollingSectionProps } from './Props.types';
+import { ScrollAxes, ScrollHandlerState, ScrollingSectionProps } from './Props.types';
 import { useScrollContext } from './ScrollContext';
 
 const scrollHandlerStateInitialState: ScrollHandlerState = {
@@ -10,7 +10,7 @@ const scrollHandlerStateInitialState: ScrollHandlerState = {
   },
   childs: [],
   pagesContainer: null as unknown as HTMLElement,
-  direction: ScrollDirections.vertical,
+  direction: ScrollAxes.vertical,
   scrollEnabled: false,
   animationDuration: 400,
   isRoot: false,
@@ -22,7 +22,7 @@ export default function ScrollingSection({
   animationDuration = 400,
   animationEasing = 'cubic-bezier(0.76, 0, 0.24, 1)',
 
-  direction = ScrollDirections.vertical,
+  direction = ScrollAxes.vertical,
   isRoot = false,
   width = '100vw',
   height = '100vh',
@@ -46,10 +46,10 @@ export default function ScrollingSection({
 
   const scrollSubscribed = useRef(false);
 
-  const { scrollManager, scrollContext } = useScrollContext();
+  const { scrollController, scrollContext } = useScrollContext();
 
   useEffect(() => {
-    if (scrollManager && !scrollSubscribed.current) {
+    if (scrollController && !scrollSubscribed.current) {
       const containerRef = scrollContainerRef.current;
       let scrollState = scrollStateRef.current;
 
@@ -65,11 +65,11 @@ export default function ScrollingSection({
           childs,
         };
 
-        scrollManager.subscribe(scrollContainerRef.current, scrollState);
+        scrollController.addScrollContainer(scrollContainerRef.current, scrollState);
         scrollSubscribed.current = true;
       }
     }
-  }, [scrollManager, isRoot]);
+  }, [scrollController, isRoot]);
 
   if (!scrollContext && !isRoot) {
     throw new Error('Only use <NestedPageScroll> inside <PageScroll>');

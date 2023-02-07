@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
-import { ScrollManager } from '../App/ScrollManager';
+import ScrollController from '../App/ScrollController/ScrollController';
 
-export const ScrollContext = createContext<{ scrollManager: ScrollManager | null; scrollContext: true }>({
-  scrollManager: null,
+export const ScrollContext = createContext<{ scrollController: ScrollController | null; scrollContext: true }>({
+  scrollController: null,
   scrollContext: true,
 });
 
