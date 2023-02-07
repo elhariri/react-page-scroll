@@ -41,7 +41,7 @@ Using yarn :
 
     export  default  SimpleExample;
 
-##Demo : [Simple scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/)
+### Demo : [Simple scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/)
 
 ### Nested example:
 
@@ -62,7 +62,7 @@ this is nested scroll example where the container scrolls vertically and the nes
 
     export  default  SimpleNestedExample;
 
-##Demo : [Nested scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/demo3)
+### Demo : [Nested scroll](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/demo3)
 
 ## Documentation
 
