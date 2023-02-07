@@ -15,10 +15,7 @@ export type YdirectionState = 'up' | 'down' | 'stationary';
 
 export type ScrollMove = 'up' | 'down' | 'left' | 'right' | null;
 
-export interface ScrollDirection {
-  YDirection: YdirectionState;
-  XDirection: XdirectionState;
-}
+export type ScrollDirection = 'up' | 'down' | 'left' | 'right' | 'stationary';
 
 export interface Gesture {
   id: number;

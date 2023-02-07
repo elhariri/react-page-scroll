@@ -4,10 +4,7 @@ import { useScrollContext } from './ScrollContext';
 
 const scrollHandlerStateInitialState: ScrollHandlerState = {
   currentChildIndex: 0,
-  scrollState: {
-    YDirection: 'stationary',
-    XDirection: 'stationary',
-  },
+  scrollState: 'stationary',
   childs: [],
   pagesContainer: null as unknown as HTMLElement,
   direction: ScrollAxes.vertical,
@@ -21,7 +18,6 @@ export default function ScrollingSection({
   scrollEnabled = false,
   animationDuration = 400,
   animationEasing = 'cubic-bezier(0.76, 0, 0.24, 1)',
-
   direction = ScrollAxes.vertical,
   isRoot = false,
   width = '100vw',

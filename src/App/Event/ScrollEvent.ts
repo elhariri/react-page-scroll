@@ -1,4 +1,4 @@
-import { ScrollDirection, ScrollHandlerState, XdirectionState, YdirectionState } from '../Scroll.types';
+import { ScrollDirection, ScrollHandlerState } from '../Scroll.types';
 import { ScrollManager } from '../ScrollManager';
 import { ScrollPower, WheelScrollPower } from './ScrollEventPower/ScrollEventPower';
 
@@ -8,7 +8,7 @@ export type ScrollWithTouchEvent = TouchEvent;
 
 export type ScrollEventTypes = ScrollWithWheelEvent | TouchEvent;
 
-const initialScrollDirection: ScrollDirection = { YDirection: 'stationary', XDirection: 'stationary' };
+const initialScrollDirection: ScrollDirection = 'stationary';
 
 abstract class ScrollEvent {
   protected hash = 0;
@@ -19,7 +19,7 @@ abstract class ScrollEvent {
 
   abstract id: number | null;
 
-  protected scrollControlFrequency = 100;
+  protected scrollControlFrequency = 30;
 
   protected ongoingScrollDirection: ScrollDirection = initialScrollDirection;
 
@@ -27,11 +27,11 @@ abstract class ScrollEvent {
 
   protected scrollManager = new ScrollManager();
 
-  protected container: HTMLDivElement | null = null;
-
   protected bindedHandleScroll = this.handleScroll.bind(this);
 
-  protected abstract detectScrollDirection(event: ScrollEventTypes): ScrollDirection | null;
+  protected handlingScroll = false;
+
+  protected abstract detectScrollDirection(event: ScrollEventTypes): ScrollDirection;
 
   protected abstract captureOngoingGesture(event: ScrollEventTypes): void;
 
@@ -40,7 +40,7 @@ abstract class ScrollEvent {
   protected setScrollDirectionState(event: ScrollEventTypes): void {
     const detectedScrollDirection = this.detectScrollDirection(event);
 
-    if (detectedScrollDirection) {
+    if (detectedScrollDirection !== 'stationary') {
       this.ongoingScrollDirection = detectedScrollDirection;
       this.scrollDirectionDetected = true;
     }
@@ -61,7 +61,7 @@ abstract class ScrollEvent {
     this.scrollDirectionDetected = false;
   }
 
-  abstract subscribe(container: HTMLDivElement): void;
+  abstract subscribe(): void;
 
   abstract unsubscribe(): void;
 
@@ -71,6 +71,7 @@ abstract class ScrollEvent {
 
   handleScroll<Event extends ScrollEventTypes>(event: Event) {
     this.captureOngoingGesture(event);
+
     if (this.readyToScroll()) {
       this.scrollManager.handleScroll({ id: this.hash, scrollDiretion: this.ongoingScrollDirection });
     }
@@ -80,9 +81,10 @@ abstract class ScrollEvent {
 export class WheelScrollEvent extends ScrollEvent {
   protected scrollPower: ScrollPower = new WheelScrollPower();
 
+  protected timer: NodeJS.Timeout | null = null;
+
   protected detectScrollDirection(wheelEvent: ScrollWithWheelEvent): ScrollDirection {
-    let YDirection: YdirectionState = 'stationary',
-      XDirection: XdirectionState = 'stationary';
+    let direction: ScrollDirection = 'stationary';
 
     const DeltaY = Math.abs(wheelEvent.deltaY),
       DeltaX = Math.abs(wheelEvent.deltaX);
@@ -90,47 +92,46 @@ export class WheelScrollEvent extends ScrollEvent {
     if (DeltaY > DeltaX) {
       if (DeltaY > 1) {
         if (wheelEvent.deltaY > 0) {
-          YDirection = 'down';
+          direction = 'down';
         } else {
-          YDirection = 'up';
+          direction = 'up';
         }
       }
     } else {
       if (DeltaX > 1) {
         if (wheelEvent.deltaX > 0) {
-          XDirection = 'left';
+          direction = 'left';
         } else {
-          XDirection = 'right';
+          direction = 'right';
         }
       }
     }
 
-    return {
-      XDirection,
-      YDirection,
-    };
+    return direction;
   }
 
   protected readyToScroll() {
-    return (
-      (this.ongoingScrollDirection.XDirection !== 'stationary' && this.scrollPower.didReachMaxPower.X) ||
-      (this.ongoingScrollDirection.YDirection !== 'stationary' && this.scrollPower.didReachMaxPower.Y)
-    );
+    return this.scrollPower.didReachMaxPower;
   }
 
   protected captureOngoingGesture(event: ScrollWithWheelEvent): void {
     this.scrollPower.analyzePower(event);
     this.setScrollDirectionState(event);
-    console.log('FIRED');
-    if (this.scrollPower.isNewEvent || this.hash === 0) {
+
+    const newYEvent = this.scrollPower.isNewEvent.Y;
+    const newXEvent = this.scrollPower.isNewEvent.X;
+
+    if (newYEvent || newXEvent || this.hash === 0) {
       this.hash = Date.now();
       this.scrollPower.handleNewEvent();
     }
 
-    if (this.timer) clearTimeout(this.timer);
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
 
     this.timer = setTimeout(() => {
-      if (this.readyToScroll()) {
+      if (this.scrollPower.didReachMaxPower) {
         this.reinitializeState();
       }
     }, this.scrollControlFrequency);
@@ -145,79 +146,9 @@ export class WheelScrollEvent extends ScrollEvent {
   }
 
   unsubscribe(): void {
-    if (this.container) {
-      this.container.removeEventListener('wheel', this.bindedHandleScroll);
-    }
+    window.removeEventListener('wheel', this.bindedHandleScroll);
   }
 }
-
-/* export class TouchScrollEvent extends ScrollEvent {
-  private skippedFirstTouchs = 0;
-
-  private lastTouchEvent: Touch | null = null;
-
-  protected detectScrollDirection(touchEvent: TouchEvent) {
-    let YDirection: YdirectionState = 'stationary',
-      XDirection: XdirectionState = 'stationary';
-
-    //This lines are added to fine tune the behavior on the last page on mobile some times when you scroll down ig goes up because the forst touch events are somewhat unreliable
-    // maybe this can be fine tuned in a better manner
-    // either way the skipp first touched and sensitivity logic is added to acheive vetter predictability
-
-    const touchesToSkip = 4;
-
-    if (this.skippedFirstTouchs > touchesToSkip) {
-      if (this.lastTouchEvent) {
-        const { screenY, screenX } = touchEvent.changedTouches[0];
-        const YDelta = screenY - this.lastTouchEvent.screenY;
-        const XDelta = screenX - this.lastTouchEvent.screenX;
-        const isvertical = Math.abs(YDelta) > Math.abs(XDelta);
-
-        const sensitivity = 0;
-
-        if (isvertical) {
-          if (YDelta > sensitivity) {
-            YDirection = 'up';
-          } else if (YDelta < -sensitivity) {
-            YDirection = 'down';
-          }
-        } else {
-          if (XDelta > sensitivity) {
-            XDirection = 'right';
-          } else if (XDelta < -sensitivity) {
-            XDirection = 'left';
-          }
-        }
-        return {
-          XDirection,
-          YDirection,
-        };
-      } else {
-        this.lastTouchEvent = touchEvent.changedTouches[0];
-      }
-    } else {
-      this.skippedFirstTouchs++;
-    }
-
-    return null;
-  }
-
-  captureOngoingGesture(): void {
-    if (this.hash === 0) {
-      this.setId();
-    }
-
-    if (this.timer) clearTimeout(this.timer);
-
-    this.timer = setTimeout(() => {
-      this.hash = 0;
-    }, this.scrollControlFrequency);
-  }
-
-  get id() {
-    return this.hash || 0;
-  }
-} */
 
 export const wheelScrollEvent = new WheelScrollEvent();
 

@@ -13,12 +13,15 @@ export abstract class ScrollPower {
   abstract analyzePower(event: ScrollEventTypes): void;
 
   get isNewEvent() {
-    return this.XAxisPowerControl.isNewEvent || this.YAxisPowerControl.isNewEvent;
+    return { X: this.XAxisPowerControl.isNewEvent, Y: this.YAxisPowerControl.isNewEvent };
   }
 
   reinitializeState(): void {
     this.XAxisPowerControl.reinitializeState();
     this.YAxisPowerControl.reinitializeState();
+
+    this.XPower = 0;
+    this.YPower = 0;
   }
 
   handleNewEvent() {
@@ -27,7 +30,11 @@ export abstract class ScrollPower {
   }
 
   get didReachMaxPower() {
-    return { X: this.XAxisPowerControl.didReachMaxPower, Y: this.YAxisPowerControl.didReachMaxPower };
+    if (this.XAxisPowerControl.maxAxisScrollPower > this.YAxisPowerControl.maxAxisScrollPower) {
+      return this.XAxisPowerControl.didReachMaxPower;
+    } else {
+      return this.YAxisPowerControl.didReachMaxPower;
+    }
   }
 }
 

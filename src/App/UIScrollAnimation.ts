@@ -1,12 +1,11 @@
 import { ScrollAxis, ScrollAxes } from './Scroll.types';
 
 class UIScrollAnimation {
-  static fireScroll({
+  static async fireScroll({
     currentChildIndex,
     childs,
     pagesContainer,
     direction,
-    onScrollEnd,
     animationDuration,
   }: {
     currentChildIndex: number;
@@ -14,7 +13,6 @@ class UIScrollAnimation {
     pagesContainer: HTMLElement;
     direction: ScrollAxis;
     animationDuration: number;
-    onScrollEnd: () => void;
   }) {
     let nextOffset = 0,
       offest: 'offsetHeight' | 'offsetWidth' = 'offsetHeight',
@@ -31,9 +29,11 @@ class UIScrollAnimation {
 
     pagesContainer.style.transform = `${animation}(${-nextOffset}px)`;
 
-    setTimeout(() => {
-      onScrollEnd();
-    }, animationDuration);
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, animationDuration);
+    });
 
     return this;
   }
