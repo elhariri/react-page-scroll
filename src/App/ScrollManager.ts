@@ -1,4 +1,4 @@
-import { ScrollControls, ScrollHandlerState, ScrollStackItem } from './Scroll.types';
+import { Gesture, ScrollControls, ScrollDirection, ScrollHandlerState, ScrollStackItem } from './Scroll.types';
 import SectionScrollHandler from './SectionScrollHandler';
 
 class ScrollStack {
@@ -234,8 +234,24 @@ export class ScrollManager {
 
   private scrollControl: ScrollControls = new ScrollControl(this);
 
+  private lastHandledGestureId = 0;
+
   private initializeScrollHandler(sectionScrollHandler: SectionScrollHandler) {
     sectionScrollHandler.init(this.scrollControl);
+  }
+
+  private getScrollMove(scrollState: ScrollDirection) {
+    const { XDirection, YDirection } = scrollState;
+
+    if (YDirection !== 'stationary') {
+      return YDirection;
+    }
+
+    if (XDirection !== 'stationary') {
+      return XDirection;
+    }
+
+    return null;
   }
 
   get activeScrollHandler() {
@@ -267,8 +283,16 @@ export class ScrollManager {
     return sectionScrollHandler;
   }
 
-  handleScroll() {
-    console.log('SCROLL HANDLED');
+  handleScroll({ id, scrollDiretion }: Gesture) {
+    if (id > this.lastHandledGestureId) {
+      this.lastHandledGestureId = id;
+
+      const currentScrollHandler = this.activeScrollHandler;
+
+      const willReachEndOfDocument = currentScrollHandler.willReachEndOfDocument(this.getScrollMove(scrollDiretion));
+
+      console.log(willReachEndOfDocument);
+    }
   }
 }
 

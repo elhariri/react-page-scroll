@@ -20,6 +20,11 @@ export interface ScrollDirection {
   XDirection: XdirectionState;
 }
 
+export interface Gesture {
+  id: number;
+  scrollDiretion: ScrollDirection;
+}
+
 export interface ScrollManagerSubscribeOptionsParams {
   direction?: ScrollAxis;
   isRoot?: boolean;

@@ -6,6 +6,8 @@ import {
   ScrollHandlerState,
   XdirectionState,
   YdirectionState,
+  //ScrollDirection,
+  ScrollMove,
 } from './Scroll.types';
 import { WheelScrollEvent } from './Event/ScrollEvent';
 //import { ScrollManager } from './ScrollManager';
@@ -37,6 +39,20 @@ class SectionScrollHandler {
     this.bindedShouldHandleTouchScroll = this.shouldHandleTouchScrollEvent.bind(this) as unknown as (e: Event) => void;
 
     this.bindedHandleResize = this.handleResize.bind(this);
+  }
+
+  willReachEndOfDocument(scrollMove: ScrollMove) {
+    const { currentChildIndex, childs } = this.scrollUIState;
+
+    if (scrollMove) {
+      if (['down', 'left'].includes(scrollMove) && currentChildIndex + 1 >= childs.length - 1) {
+        return true;
+      } else if (['up', 'right'].includes(scrollMove) && currentChildIndex - 1 <= 0) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private reinitializeScrollState() {

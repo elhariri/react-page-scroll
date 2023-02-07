@@ -29,7 +29,7 @@ abstract class ScrollEvent {
 
   protected container: HTMLDivElement | null = null;
 
-  protected bindedcaptureOngoingGesture = this.captureOngoingGesture.bind(this);
+  protected bindedHandleScroll = this.handleScroll.bind(this);
 
   protected abstract detectScrollDirection(event: ScrollEventTypes): ScrollDirection | null;
 
@@ -67,6 +67,13 @@ abstract class ScrollEvent {
 
   addScrollContainer(container: HTMLDivElement, scrollUIState: ScrollHandlerState) {
     this.scrollManager.subscribe(container, scrollUIState);
+  }
+
+  handleScroll<Event extends ScrollEventTypes>(event: Event) {
+    this.captureOngoingGesture(event);
+    if (this.readyToScroll()) {
+      this.scrollManager.handleScroll({ id: this.hash, scrollDiretion: this.ongoingScrollDirection });
+    }
   }
 }
 
@@ -134,12 +141,12 @@ export class WheelScrollEvent extends ScrollEvent {
   }
 
   subscribe(): void {
-    window.addEventListener('wheel', this.bindedcaptureOngoingGesture);
+    window.addEventListener('wheel', this.bindedHandleScroll);
   }
 
   unsubscribe(): void {
     if (this.container) {
-      this.container.removeEventListener('wheel', this.bindedcaptureOngoingGesture);
+      this.container.removeEventListener('wheel', this.bindedHandleScroll);
     }
   }
 }
