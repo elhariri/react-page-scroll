@@ -3,6 +3,8 @@
 A simple React library for full page scrolling page by page.
 [Click here for a Demo!](http://react-page-scroll-demo.s3-website-us-east-1.amazonaws.com/)
 
+![enter image description here](https://my-public-resources.s3.amazonaws.com/images/reactpagescroll.png)
+
 ## Installation
 
 Using npm :
