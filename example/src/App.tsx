@@ -6,6 +6,7 @@ import './index.css';
 import SimpleDemo from './demos/SimpleDemo';
 import DemoWithPageIndicators from './demos/DemoWithPageIndicators';
 import NestedDemoWithPageIndicators from './demos/NestedDemoWithPageIndicators';
+import GithubIcon from './components/Icons/GithubIcon';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,12 @@ const router = createBrowserRouter([
           </NavLink>
         </div>
         <Outlet />
+        <a href='https://github.com/elhariri/react-page-scroll' target='_blank' rel='noreferrer'>
+          <div className='link-to-github'>
+            <GithubIcon />
+            <span style={{ marginLeft: '10px' }}>Github repo!</span>
+          </div>
+        </a>
       </div>
     ),
     children: [

@@ -121,6 +121,19 @@ code {
   }
 }
 
+.link-to-github {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  padding-right: 20px;
+  background: white;
+  display: flex;
+  text-decoration: none;
+  color: black;
+  border-radius: 0 10px px 0 0;
+}
+
 @media (max-width: 540px) {
   .header {
     padding-left: 40px;
